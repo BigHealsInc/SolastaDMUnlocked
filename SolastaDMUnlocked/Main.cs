@@ -64,11 +64,6 @@ namespace SolastaDMUnlocked
         // ENTRY POINT IF YOU NEED SAFE DATABASE ACCESS
         static void ModAfterDBReady()
         {
-            // Modifying existing enemy attack types - is this improper to not use Traverse? Sort of a pain with nested content
-            var skeleton = DatabaseHelper.MonsterAttackDefinitions.Attack_Skeleton_Scimitar;
-            skeleton.EffectDescription.EffectForms[0].DamageForm.DamageType = "DamageSlashing";
-            ((Database<MonsterAttackDefinition>)DatabaseRepository.GetDatabase<MonsterAttackDefinition>()).Add((MonsterAttackDefinition)skeleton);
-
             UnlockEnemies();
             UnlockTraps();
             UnlockItems();

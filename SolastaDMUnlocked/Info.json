@@ -2,7 +2,7 @@
 	"Id": "SolastaDMUnlocked",
 	"DisplayName": "SolastaDMUnlocked",
 	"Author": "AdricLives",
-	"Version": "0.0.1",
+	"Version": "1.0.0",
 	"ManagerVersion": "0.23.3",
 	"AssemblyName": "SolastaDMUnlocked.dll",
 	"EntryMethod": "SolastaDMUnlocked.Main.Load"

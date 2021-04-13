@@ -71,12 +71,14 @@ namespace SolastaDMUnlocked
 
             UnlockEnemies();
             UnlockTraps();
-            //UnlockItems();
+            UnlockItems();
             //UnlockLootPacks();
         }
 
         private static void UnlockEnemies()
         {
+            // Should I address issue of certain monsters not having useful AI, like City Guards (defaultBattleDecisionPackage)
+            // Some monsters are causing a crash too, I should protect against this a bit - really seems to just be the Gargoyle which is missing its asset?
             MonsterDefinition[] monster_definitions = DatabaseRepository.GetDatabase<MonsterDefinition>().GetAllElements();
             foreach (MonsterDefinition monster_definition in monster_definitions)
             {
@@ -86,36 +88,45 @@ namespace SolastaDMUnlocked
 
         private static void UnlockLootPacks()
         {
+            // Maybe not necessary, the lootpacks are all missing their GUI representation and don't offer much, would rather have a mod dedicated to DM loot packs
             throw new NotImplementedException();
         }
 
         private static void UnlockItems()
         {
-            throw new NotImplementedException();
+            ItemDefinition[] item_definitions = DatabaseRepository.GetDatabase<ItemDefinition>().GetAllElements();
+            foreach (ItemDefinition item_definition in item_definitions)
+            {
+                Traverse.Create((object)item_definition).Field("inDungeonEditor").SetValue((object)true);
+            }
         }
 
         private static void UnlockTraps()
         {
             String description;
+            String title;
             EnvironmentEffectDefinition[] env_effect_definitions = DatabaseRepository.GetDatabase<EnvironmentEffectDefinition>().GetAllElements();
             foreach (EnvironmentEffectDefinition env_effect_definition in env_effect_definitions)
             {
-                if (env_effect_definition.GuiPresentation.Title == "") 
+                description = env_effect_definition.GuiPresentation.Description;
+                title = env_effect_definition.GuiPresentation.Title;
+                if (title == "")
                 {
-                    if (env_effect_definition.GuiPresentation.Description == "")
-                    {
-                        description = env_effect_definition.name;
-                    } else {
-                        description = env_effect_definition.GuiPresentation.Description;
-                    }
-                    GuiPresentationBuilder presentationBuilder = 
-                    new GuiPresentationBuilder(
-                        LocalizationHelper.AddString("EnvironmentEffect/&" + env_effect_definition.name + "Description", description), 
-                        LocalizationHelper.AddString("EnvironmentEffect/&" + env_effect_definition.name + "Title", env_effect_definition.name)
-                    );
-                    GuiPresentation guiPresentation = presentationBuilder.Build();
-                    Traverse.Create((object)env_effect_definition).Field(nameof(guiPresentation)).SetValue((object)guiPresentation);
+                    title = env_effect_definition.name;
+                    title = title.Replace("_", " ");
                 }
+                if (description == "")
+                {
+                    description = env_effect_definition.name;
+                    description = description.Replace("_", " ");
+                }
+                GuiPresentationBuilder presentationBuilder = 
+                new GuiPresentationBuilder(
+                    LocalizationHelper.AddString("EnvironmentEffect/&" + env_effect_definition.name + "Description", description), 
+                    LocalizationHelper.AddString("EnvironmentEffect/&" + env_effect_definition.name + "Title", title)
+                );
+                GuiPresentation guiPresentation = presentationBuilder.Build();
+                Traverse.Create((object)env_effect_definition).Field(nameof(guiPresentation)).SetValue((object)guiPresentation);
                 Traverse.Create((object)env_effect_definition).Field("inDungeonEditor").SetValue((object)true);
             }
         }

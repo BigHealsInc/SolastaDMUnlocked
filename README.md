@@ -5,9 +5,10 @@ The Beta version of the Dungeon Maker is extremely restrictive in available mons
 # How to Install
 
 1. Download and install [Unity Mod Manager](https://www.nexusmods.com/site/mods/21)
-2. Download this mod (SolastaDMUnlocked.zip)
-3. Execute Unity Mod Manager, Set Solasta Location, and Click Install
-4. Select Mods tab, drag and drop the downloaded zip file to load
+2. Download the SolastaApiMod https://www.nexusmods.com/solastacrownofthemagister/mods/48/
+3. Download this mod (SolastaDMUnlocked.zip)
+4. Execute Unity Mod Manager, Set Solasta Location, and Click Install
+5. Select Mods tab, drag and drop the downloaded zip files to load
 
 # Known Issues
 

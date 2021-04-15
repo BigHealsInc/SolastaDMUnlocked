@@ -1,12 +1,13 @@
 # Solasta DM Unlocked
 
-Makes all game items, traps and monsters available within the Dungeon Maker.
+The Beta version of the Dungeon Maker is extremely restrictive in available monsters, items and traps. This mod opens the floodgates of options from the base game, completely unfiltered access to all the game's resources. Any maps created with this mod require the mod to play the maps.
 
 # How to Install
 
 1. Download and install [Unity Mod Manager](https://www.nexusmods.com/site/mods/21)
-2. Execute Unity Mod Manager, Select Solasta, and Install
-3. Select Mods tab, drag and drop zip file from releases
+2. Download this mod (SolastaDMUnlocked.zip)
+3. Execute Unity Mod Manager, Set Solasta Location, and Click Install
+4. Select Mods tab, drag and drop the downloaded zip file to load
 
 # Known Issues
 

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using UnityModManagerNet;
 using HarmonyLib;
+using I2.Loc;
+using Newtonsoft.Json.Linq;
 using SolastaModApi;
 
 namespace SolastaDMUnlocked
@@ -26,6 +29,23 @@ namespace SolastaDMUnlocked
 
         public static UnityModManager.ModEntry.ModLogger logger;
         public static bool enabled;
+
+        public static void LoadTranslations()
+        {
+            var languageSourceData = LocalizationManager.Sources[0];
+            var translations = JObject.Parse(File.ReadAllText(UnityModManager.modsPath + @"/SolastaDMUnlocked/Translations.json"));
+            foreach (var translationKey in translations)
+            {
+                foreach (var translationLanguage in (JObject)translationKey.Value)
+                {
+                    var languageIndex = languageSourceData.GetLanguageIndex(translationLanguage.Key);
+                    if (languageIndex > 0)
+                    {
+                        languageSourceData.AddTerm(translationKey.Key).Languages[languageIndex] = translationLanguage.Value.ToString();
+                    }
+                }
+            }
+        }
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
@@ -58,7 +78,7 @@ namespace SolastaDMUnlocked
         // ENTRY POINT IF YOU NEED SERVICE LOCATORS ACCESS
         static void ModBeforeDBReady()
         {
-            
+            LoadTranslations();
         }
 
         // ENTRY POINT IF YOU NEED SAFE DATABASE ACCESS
@@ -116,10 +136,7 @@ namespace SolastaDMUnlocked
                     description = description.Replace("_", " ");
                 }
                 GuiPresentationBuilder presentationBuilder = 
-                new GuiPresentationBuilder(
-                    LocalizationHelper.AddString("EnvironmentEffect/&" + env_effect_definition.name + "Description", description), 
-                    LocalizationHelper.AddString("EnvironmentEffect/&" + env_effect_definition.name + "Title", title)
-                );
+                new GuiPresentationBuilder(description, title);
                 GuiPresentation guiPresentation = presentationBuilder.Build();
                 Traverse.Create((object)env_effect_definition).Field(nameof(guiPresentation)).SetValue((object)guiPresentation);
                 Traverse.Create((object)env_effect_definition).Field("inDungeonEditor").SetValue((object)true);
